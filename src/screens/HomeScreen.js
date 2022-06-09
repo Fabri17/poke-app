@@ -16,60 +16,7 @@ import VectorIcon from "react-native-vector-icons/FontAwesome";
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
-const Card = ({ pokemon }) => {
-  return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={() => navigation.navigate("Details", pokemon)}
-    >
-      <View style={style.card}>
-        {/*Heart icon*/}
-        <View style={{ alignItems: "flex-end" }}>
-          <View
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 20,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: false
-                ? "rgba(245, 42, 42,0.2)"
-                : "rgba(0,0,0,0.2) ",
-            }}
-          >
-            <VectorIcon
-              name="heart"
-              size={18}
-              color={false ? COLORS.red : COLORS.black}
-            />
-          </View>
-        </View>
-
-        {/*Image*/}
-        <View
-          style={{
-            height: 100,
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={{
-              uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.entry_number}.png`,
-            }}
-            style={{ flex: 1, resizeMode: "contain", width: 100, height: 50 }}
-          />
-        </View>
-
-        {/*Pokemon details*/}
-        <Text style={{ fontWeight: "bold", fontSize: 17, marginTop: 10 }}>
-          {pokemon.pokemon_species.name}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -89,6 +36,59 @@ const HomeScreen = () => {
     getPokemons();
   }, []);
 
+  const Card = ({ pokemon }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("Details", pokemon)}
+      >
+        <View style={style.card}>
+          {/*Heart icon*/}
+          <View style={{ alignItems: "flex-end" }}>
+            <View
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: false
+                  ? "rgba(245, 42, 42,0.2)"
+                  : "rgba(0,0,0,0.2) ",
+              }}
+            >
+              <VectorIcon
+                name="heart"
+                size={18}
+                color={false ? COLORS.red : COLORS.black}
+              />
+            </View>
+          </View>
+
+          {/*Image*/}
+          <View
+            style={{
+              height: 100,
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{
+                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.entry_number}.png`,
+              }}
+              style={{ flex: 1, resizeMode: "contain", width: 100, height: 50 }}
+            />
+          </View>
+
+          {/*Pokemon details*/}
+          <Text style={{ fontWeight: "bold", fontSize: 17, marginTop: 10 }}>
+            {pokemon.pokemon_species.name}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <SafeAreaView
       style={{ flex: 1, paddingHorizontal: 20, backgroundColor: COLORS.white }}
@@ -105,7 +105,12 @@ const HomeScreen = () => {
             Pokedex Kanto
           </Text>
         </View>
-        <VectorIcon name="heart" size={25} />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate("Favorites")}
+        >
+          <VectorIcon name="heart" size={25} />
+        </TouchableOpacity>
       </View>
 
       {/* Search and filter*/}
@@ -134,7 +139,6 @@ const HomeScreen = () => {
             contentContainerStyle={{
               marginTop: 20,
               paddingBottom: 250,
-            
             }}
             numColumns={2}
             data={data}
@@ -143,10 +147,7 @@ const HomeScreen = () => {
             }}
           />
         )}
-    
       </View>
-
-      
     </SafeAreaView>
   );
 };

@@ -20,7 +20,7 @@ const DetailScreen = ({ navigation, route }) => {
   const getInfo = async () => {
     try {
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemon.entry_number}/`
+        `https://pokeapi.co/api/v2/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}/`
       );
       const json = await response.json();
       setData(json);
@@ -54,7 +54,7 @@ const DetailScreen = ({ navigation, route }) => {
             <View style={style.imageContainer}>
               <Image
                 source={{
-                  uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.entry_number}.png`,
+                  uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}.png`,
                 }}
                 style={{
                   resizeMode: "contain",

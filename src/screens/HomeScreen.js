@@ -37,6 +37,7 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const Card = ({ pokemon }) => {
+    console.log(pokemon)
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -74,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
           >
             <Image
               source={{
-                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.entry_number}.png`,
+                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}.png`,
               }}
               style={{ flex: 1, resizeMode: "contain", width: 100, height: 50 }}
             />

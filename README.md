@@ -8,7 +8,7 @@ Esta aplicación muestra los pokemons de la región Kanto, puedes añadirlos a f
 
 ## Preview
 
-Insert gif or link to demo
+![alt text](https://github.com/Fabri17/poke-app/blob/master/github/home.png)
 
 
 ## Instalación

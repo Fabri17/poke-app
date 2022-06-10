@@ -9,18 +9,36 @@ import {
 } from "react-native";
 
 import React, { useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../consts/colors";
 
+//*****Shared preferences methods******
+async function saveFavorites(value) {
+  await SecureStore.setItemAsync("favorites", value);
+}
+//End of Shared Preferences Methods
+
 const DetailScreen = ({ navigation, route }) => {
+  /* About Pokemon */
   const pokemon = route.params;
   const [isLoading, setLoading] = useState(true);
   const [pokemonInfo, setData] = useState([]);
 
+  /* About Favorites */
+  const [isFavorite, setFavorite] = useState(false);
+  const [favorites] = useState([]);
+
   const getInfo = async () => {
     try {
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}/`
+        `https://pokeapi.co/api/v2/pokemon/${
+          pokemon.pokemon_species.url
+            .split("pokemon-species")
+            [
+              pokemon.pokemon_species.url.split("pokemon-species").length - 1
+            ].split("/")[1]
+        }/`
       );
       const json = await response.json();
       setData(json);
@@ -31,8 +49,25 @@ const DetailScreen = ({ navigation, route }) => {
     }
   };
 
+  const getFavorites = async () => {
+    let result = await SecureStore.getItemAsync("favorites");
+    if (result) {
+      result.split(",").forEach((value) => favorites.push(value));
+      setFavorite(
+        favorites.includes(
+          pokemon.pokemon_species.url
+            .split("pokemon-species")
+            [
+              pokemon.pokemon_species.url.split("pokemon-species").length - 1
+            ].split("/")[1]
+        )
+      );
+    }
+  };
+
   useEffect(() => {
     getInfo();
+    getFavorites();
   }, []);
 
   return (
@@ -49,12 +84,39 @@ const DetailScreen = ({ navigation, route }) => {
                 size={28}
                 onPress={() => navigation.goBack()}
               />
+              <Icon
+                name="favorite"
+                size={28}
+                color={isFavorite ? COLORS.red : COLORS.black}
+                onPress={() => {
+                  if (!isFavorite) {
+                    favorites.push(pokemonInfo.id);
+                    setFavorite(true);
+                  } else {
+                    favorites.splice(
+                      favorites.indexOf(pokemonInfo.id.toString()),
+                      1
+                    );
+                    setFavorite(false);
+                  }
+
+                  //Persist data
+                  saveFavorites(favorites.toString());
+                }}
+              />
             </View>
             {/* Image */}
             <View style={style.imageContainer}>
               <Image
                 source={{
-                  uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}.png`,
+                  uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                    pokemon.pokemon_species.url
+                      .split("pokemon-species")
+                      [
+                        pokemon.pokemon_species.url.split("pokemon-species")
+                          .length - 1
+                      ].split("/")[1]
+                  }.png`,
                 }}
                 style={{
                   resizeMode: "contain",

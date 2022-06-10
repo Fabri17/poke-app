@@ -16,6 +16,7 @@ import VectorIcon from "react-native-vector-icons/FontAwesome";
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
+
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -37,35 +38,12 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const Card = ({ pokemon }) => {
-    console.log(pokemon)
     return (
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => navigation.navigate("Details", pokemon)}
       >
         <View style={style.card}>
-          {/*Heart icon*/}
-          <View style={{ alignItems: "flex-end" }}>
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 20,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: false
-                  ? "rgba(245, 42, 42,0.2)"
-                  : "rgba(0,0,0,0.2) ",
-              }}
-            >
-              <VectorIcon
-                name="heart"
-                size={18}
-                color={false ? COLORS.red : COLORS.black}
-              />
-            </View>
-          </View>
-
           {/*Image*/}
           <View
             style={{
@@ -75,7 +53,14 @@ const HomeScreen = ({ navigation }) => {
           >
             <Image
               source={{
-                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon_species.url.split("pokemon-species")[pokemon.pokemon_species.url.split("pokemon-species").length - 1].split("/")[1]}.png`,
+                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                  pokemon.pokemon_species.url
+                    .split("pokemon-species")
+                    [
+                      pokemon.pokemon_species.url.split("pokemon-species")
+                        .length - 1
+                    ].split("/")[1]
+                }.png`,
               }}
               style={{ flex: 1, resizeMode: "contain", width: 100, height: 50 }}
             />

@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
   Image,
   Dimensions,
 } from "react-native";
